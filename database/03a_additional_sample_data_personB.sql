@@ -1,5 +1,5 @@
 -- UCJIMS Stage 0: expanded synthetic Person B dataset
--- Adds 30 EVIDENCE rows, 30 CHAIN_OF_CUSTODY rows and 24 FORENSIC_REPORT rows.
+-- Adds 30 EVIDENCE rows, 44 CHAIN_OF_CUSTODY rows and 24 FORENSIC_REPORT rows (98 inserts).
 -- Fixed IDs intentionally follow the tracked base and Person C integration-demo rows.
 -- Dependencies: Person A schema/data; Person B schema, audit trigger and base data; Person C data and integration demo.
 -- Run this file only once per fresh schema. Fixed IDs will collide if rerun.
@@ -9,122 +9,122 @@
 INSERT INTO EVIDENCE VALUES (
   7, 1, 'Physical', 'Fingerprint lift collected and sealed at the entry point',
   TO_DATE('2025-06-01','YYYY-MM-DD'), 'Scene A', 1,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   8, 2, 'Digital', 'Mobile device secured for authorized forensic imaging',
   TO_DATE('2025-06-04','YYYY-MM-DD'), 'Scene B', 2,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   9, 3, 'Document', 'Signed document recovered and packaged for examination',
   TO_DATE('2025-06-07','YYYY-MM-DD'), 'Office Block', 3,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   10, 4, 'Biological', 'Biological swab sealed for laboratory analysis',
   TO_DATE('2025-06-10','YYYY-MM-DD'), 'Residence 3', 1,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   11, 5, 'Trace', 'Paint transfer sample collected from a vehicle panel',
   TO_DATE('2025-06-13','YYYY-MM-DD'), 'Roadside Scene', 2,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   12, 6, 'Digital', 'CCTV export preserved with acquisition notes',
   TO_DATE('2025-06-16','YYYY-MM-DD'), 'Shop Premises', 3,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   13, 7, 'Physical', 'Tool recovered, photographed and bagged at the scene',
   TO_DATE('2025-06-19','YYYY-MM-DD'), 'Warehouse 2', 1,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   14, 8, 'Document', 'Receipt and transaction record retained for comparison',
   TO_DATE('2025-06-22','YYYY-MM-DD'), 'Records Room', 2,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   15, 9, 'Digital', 'Laptop storage image prepared for examination',
   TO_DATE('2025-06-25','YYYY-MM-DD'), 'Digital Forensics Intake', 3,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   16, 10, 'Trace', 'Trace sample packaged for controlled storage',
   TO_DATE('2025-06-28','YYYY-MM-DD'), 'Vehicle Inspection Bay', 1,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   17, 11, 'Physical', 'Footwear impression cast collected and labelled',
   TO_DATE('2025-07-01','YYYY-MM-DD'), 'Scene A', 2,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   18, 12, 'Trace', 'Fiber sample separated from clothing and sealed',
   TO_DATE('2025-07-04','YYYY-MM-DD'), 'Scene B', 3,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   19, 13, 'Digital', 'External storage device secured for digital acquisition',
   TO_DATE('2025-07-07','YYYY-MM-DD'), 'Office Block', 1,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   20, 14, 'Document', 'Handwritten note submitted for document examination',
   TO_DATE('2025-07-10','YYYY-MM-DD'), 'Residence 3', 2,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   21, 15, 'Physical', 'Broken lock component collected as physical evidence',
   TO_DATE('2025-07-13','YYYY-MM-DD'), 'Roadside Scene', 3,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   22, 1, 'Biological', 'Biological sample sealed and labelled for testing',
   TO_DATE('2025-07-16','YYYY-MM-DD'), 'Shop Premises', 1,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   23, 2, 'Digital', 'Call-detail export received for authorized analysis',
   TO_DATE('2025-07-19','YYYY-MM-DD'), 'Warehouse 2', 2,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   24, 3, 'Physical', 'Glass fragments packaged for laboratory comparison',
   TO_DATE('2025-07-22','YYYY-MM-DD'), 'Records Room', 3,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   25, 4, 'Physical', 'Metal fragment collected and photographed',
   TO_DATE('2025-07-25','YYYY-MM-DD'), 'Digital Forensics Intake', 1,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   26, 5, 'Document', 'Printed correspondence retained as case evidence',
   TO_DATE('2025-07-28','YYYY-MM-DD'), 'Vehicle Inspection Bay', 2,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   27, 6, 'Digital', 'Memory card sealed for forensic acquisition',
   TO_DATE('2025-07-31','YYYY-MM-DD'), 'Scene A', 3,
-  'Evidence Room A', 'COLLECTED');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   28, 7, 'Trace', 'Residue sample transferred to the laboratory',
   TO_DATE('2025-08-03','YYYY-MM-DD'), 'Scene B', 1,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   29, 8, 'Physical', 'Damaged door component recovered and stored',
   TO_DATE('2025-08-06','YYYY-MM-DD'), 'Office Block', 2,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   30, 9, 'Digital', 'Email archive preserved for examination',
   TO_DATE('2025-08-09','YYYY-MM-DD'), 'Residence 3', 3,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   31, 10, 'Trace', 'Soil sample collected in a sealed container',
@@ -134,29 +134,29 @@ INSERT INTO EVIDENCE VALUES (
 INSERT INTO EVIDENCE VALUES (
   32, 11, 'Document', 'Delivery record received and logged',
   TO_DATE('2025-08-15','YYYY-MM-DD'), 'Shop Premises', 2,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
 INSERT INTO EVIDENCE VALUES (
   33, 12, 'Physical', 'Recovered key secured in tamper-evident packaging',
   TO_DATE('2025-08-18','YYYY-MM-DD'), 'Warehouse 2', 3,
-  'Evidence Room C', 'RETURNED');
+  'Evidence Room A', 'RETURNED');
 
 INSERT INTO EVIDENCE VALUES (
   34, 13, 'Digital', 'Network log export preserved for authorized review',
   TO_DATE('2025-08-21','YYYY-MM-DD'), 'Records Room', 1,
-  'Forensic Lab 1', 'DISPOSED');
+  NULL, 'DISPOSED');
 
 INSERT INTO EVIDENCE VALUES (
   35, 14, 'Biological', 'Hair sample packaged for laboratory comparison',
   TO_DATE('2025-08-24','YYYY-MM-DD'), 'Digital Forensics Intake', 2,
-  'Evidence Room A', 'COLLECTED');
+  'Evidence Room B', 'COLLECTED');
 
 INSERT INTO EVIDENCE VALUES (
   36, 15, 'Trace', 'Fabric fragment retained for trace comparison',
   TO_DATE('2025-08-27','YYYY-MM-DD'), 'Vehicle Inspection Bay', 3,
-  'Evidence Room B', 'UNDER_EXAMINATION');
+  'Forensic Lab 1', 'UNDER_EXAMINATION');
 
--- 30 CHAIN_OF_CUSTODY rows: IDs 7-36; each references its matching evidence ID
+-- 30 initial CHAIN_OF_CUSTODY rows: IDs 7-36; each references its matching evidence ID
 
 INSERT INTO CHAIN_OF_CUSTODY VALUES (
   7, 7, 1, 8,
@@ -279,9 +279,9 @@ INSERT INTO CHAIN_OF_CUSTODY VALUES (
   'Shop Premises', 'Transfer to authorized examiner', 'Tamper-evident seal intact', 'Transfer entered for audit trail');
 
 INSERT INTO CHAIN_OF_CUSTODY VALUES (
-  31, 31, 1, 8,
+  31, 31, 1, 2,
   TO_DATE('2025-08-13 14:48','YYYY-MM-DD HH24:MI'),
-  'Warehouse 2', 'Laboratory intake', 'Sealed', 'Package condition reviewed and noted');
+  'Evidence Room A', 'Secure evidence storage', 'Sealed', 'Awaiting forensic examination');
 
 INSERT INTO CHAIN_OF_CUSTODY VALUES (
   32, 32, 2, 9,
@@ -299,15 +299,16 @@ INSERT INTO CHAIN_OF_CUSTODY VALUES (
   'Vehicle Inspection Bay', 'Evidence review', 'Tamper-evident seal intact', 'Item condition recorded in custody log');
 
 INSERT INTO CHAIN_OF_CUSTODY VALUES (
-  35, 35, 2, 9,
+  35, 35, 2, 1,
   TO_DATE('2025-08-26 09:16','YYYY-MM-DD HH24:MI'),
-  'Scene A', 'Transfer to authorized examiner', 'Sealed', 'Transfer entered for audit trail');
+  'Evidence Room B', 'Secure evidence storage', 'Sealed', 'Awaiting forensic examination');
 
 INSERT INTO CHAIN_OF_CUSTODY VALUES (
   36, 36, 3, 10,
   TO_DATE('2025-08-30 10:23','YYYY-MM-DD HH24:MI'),
   'Scene B', 'Laboratory intake', 'Intact', 'Package condition reviewed and noted');
 
+-- Final return/disposal chain events IDs 40-53 close the status histories for returned/disposed items.
 -- 24 FORENSIC_REPORT rows: IDs 6-29 for evidence IDs 7-30
 
 INSERT INTO FORENSIC_REPORT VALUES (
@@ -331,7 +332,7 @@ INSERT INTO FORENSIC_REPORT VALUES (
   'Trace comparison performed and examiner notes retained', 'Findings recorded; authorized review required');
 
 INSERT INTO FORENSIC_REPORT VALUES (
-  11, 12, 10, TO_DATE('2025-06-19','YYYY-MM-DD'),
+  11, 12, 10, TO_DATE('2025-06-20','YYYY-MM-DD'),
   'Footage reviewed and relevant segment identified', 'Examination completed; observations documented');
 
 INSERT INTO FORENSIC_REPORT VALUES (
@@ -391,7 +392,7 @@ INSERT INTO FORENSIC_REPORT VALUES (
   'Document authenticity indicators reviewed', 'Preliminary findings documented for review');
 
 INSERT INTO FORENSIC_REPORT VALUES (
-  26, 27, 10, TO_DATE('2025-08-03','YYYY-MM-DD'),
+  26, 27, 10, TO_DATE('2025-08-04','YYYY-MM-DD'),
   'Memory-card acquisition completed and logged', 'Findings recorded; authorized review required');
 
 INSERT INTO FORENSIC_REPORT VALUES (
@@ -406,8 +407,57 @@ INSERT INTO FORENSIC_REPORT VALUES (
   29, 30, 10, TO_DATE('2025-08-15','YYYY-MM-DD'),
   'Email archive integrity and metadata reviewed', 'Preliminary findings documented for review');
 
+
+-- RETURN completed examinations to the original collector for items marked RETURNED.
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  40, 9, 10, 3, TO_DATE('2025-06-13 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 8');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  41, 13, 8, 1, TO_DATE('2025-06-24 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 12');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  42, 17, 9, 2, TO_DATE('2025-07-05 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 16');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  43, 21, 10, 3, TO_DATE('2025-07-21 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 20');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  44, 25, 8, 1, TO_DATE('2025-08-01 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 24');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  45, 29, 9, 2, TO_DATE('2025-08-12 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after forensic examination', 'Sealed', 'Synthetic return recorded after report 28');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  46, 33, 10, 3, TO_DATE('2025-08-25 10:00','YYYY-MM-DD HH24:MI'),
+  'Evidence Room A', 'Return after authorized evidence review', 'Sealed', 'Synthetic return; no forensic report fixture was added for this item');
+
+-- Record a final disposal event for each item whose current status is DISPOSED.
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  47, 10, 8, NULL, TO_DATE('2025-06-18 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 9');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  48, 14, 9, NULL, TO_DATE('2025-06-29 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 13');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  49, 18, 10, NULL, TO_DATE('2025-07-10 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 17');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  50, 22, 8, NULL, TO_DATE('2025-07-22 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 21');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  51, 26, 9, NULL, TO_DATE('2025-08-06 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 25');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  52, 30, 10, NULL, TO_DATE('2025-08-17 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic evidence disposal recorded after report 29');
+INSERT INTO CHAIN_OF_CUSTODY VALUES (
+  53, 34, 8, NULL, TO_DATE('2025-08-25 15:00','YYYY-MM-DD HH24:MI'),
+  'Authorized Disposal Unit', 'Evidence disposal', 'Disposed', 'Synthetic disposal after authorized review');
+
 COMMIT;
 
--- Expected final Person B counts after all base, integration and additional data have run once:
--- EVIDENCE = 36; CHAIN_OF_CUSTODY = 36; FORENSIC_REPORT = 29.
--- EVIDENCE_AUDIT = 36 if the trigger was valid and every custody insert fired once.
+-- Expected Person B counts after all base, integration and additional data have run once:
+-- EVIDENCE = 36; CHAIN_OF_CUSTODY = 54; FORENSIC_REPORT = 29.
+-- EVIDENCE_AUDIT = 54 if the trigger was valid and every custody insert fired once.
+-- Initial handoff status is UNDER_EXAMINATION; RETURNED items have return events;
+-- DISPOSED items have a final disposal event. Every audit row is generated by the trigger.
