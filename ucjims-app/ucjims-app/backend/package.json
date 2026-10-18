@@ -1,0 +1,24 @@
+{
+  "name": "ucjims-backend",
+  "version": "1.0.0",
+  "description": "UCJIMS API - Stage 2 backend",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed-demo-users": "node scripts/setup_demo_users.js"
+  },
+  "dependencies": {
+    "oracledb": "^6.5.1",
+    "express": "^4.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "helmet": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
