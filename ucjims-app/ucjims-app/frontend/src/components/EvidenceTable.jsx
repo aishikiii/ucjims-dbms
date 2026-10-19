@@ -7,6 +7,7 @@ const EMPTY_FORM = {
   from_user_id: '',
   to_user_id: '',
   transfer_location: '',
+  storage_location: '',
   purpose: '',
   condition: '',
   remarks: '',
@@ -109,6 +110,10 @@ export default function EvidenceTable() {
                         <label>
                           Transfer location
                           <input name="transfer_location" value={form.transfer_location} onChange={handleChange} required />
+                        </label>
+                        <label>
+                          Storage location
+                          <input name="storage_location" placeholder="e.g. Evidence Locker 4" value={form.storage_location} onChange={handleChange} />
                         </label>
                         <label>
                           Purpose

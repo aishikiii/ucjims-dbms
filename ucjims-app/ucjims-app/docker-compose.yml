@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ucjims-backend
+    restart: unless-stopped
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+      - ORACLE_USER=${ORACLE_USER:-UCJIMS_APP}
+      - ORACLE_PASSWORD=${ORACLE_PASSWORD}
+      - ORACLE_CONNECT_STRING=${ORACLE_CONNECT_STRING}
+      - ORACLE_SCHEMA=${ORACLE_SCHEMA:-UCJIMS_OWNER}
+      - ORACLE_POOL_MIN=${ORACLE_POOL_MIN:-4}
+      - ORACLE_POOL_MAX=${ORACLE_POOL_MAX:-20}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-8h}
+      - CORS_ORIGIN=http://localhost,https://localhost
+    networks:
+      - ucjims_private_net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ucjims-frontend
+    restart: unless-stopped
+    networks:
+      - ucjims_private_net
+
+  proxy:
+    image: nginx:alpine
+    container_name: ucjims-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    networks:
+      - ucjims_private_net
+
+networks:
+  ucjims_private_net:
+    driver: bridge

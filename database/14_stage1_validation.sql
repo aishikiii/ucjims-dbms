@@ -50,6 +50,10 @@ PROMPT 4. Audit completeness. These should return zero rows.
 SELECT x.custody_id FROM CHAIN_OF_CUSTODY x WHERE NOT EXISTS (SELECT 1 FROM EVIDENCE_AUDIT a WHERE a.custody_id=x.custody_id AND a.evidence_id=x.evidence_id);
 SELECT custody_id, COUNT(*) FROM EVIDENCE_AUDIT GROUP BY custody_id HAVING COUNT(*) <> 1;
 
+PROMPT 4b. Recompile views that Stage 1 table changes left INVALID (Oracle normally recompiles lazily on first use).
+ALTER VIEW CASE_SUMMARY_VIEW COMPILE;
+ALTER VIEW V_CASE_COURT_SUMMARY COMPILE;
+
 PROMPT 5. Required Stage 1 objects must be VALID and no compilation errors should be returned.
 SELECT object_name, object_type, status FROM user_objects
 WHERE object_name IN ('CASE_SUMMARY_VIEW','V_CASE_COURT_SUMMARY','TRG_CUSTODY_AUDIT',
@@ -72,6 +76,28 @@ WHERE c.case_number='GOLDEN-CASE-0001';
 
 PROMPT 7. Stage 1 fail-fast acceptance gate.
 DECLARE
+  v_golden_inmate_id INMATE.inmate_id%TYPE;
+  v_golden_custody_id CHAIN_OF_CUSTODY.custody_id%TYPE;
+  v_golden_audit_id EVIDENCE_AUDIT.audit_id%TYPE;
+  v_transfer_count_before NUMBER;
+  v_transfer_count_after  NUMBER;
+  v_seed_transfer_count   NUMBER;
+  v_seed_transfer_count_after NUMBER;
+  v_seed_prison_id        INMATE.prison_id%TYPE;
+  v_seed_prison_after     INMATE.prison_id%TYPE;
+  v_seed_status_after     INMATE.status%TYPE;
+  v_seed_release_after    INMATE.actual_release_date%TYPE;
+  v_evidence_custody_count NUMBER;
+  v_evidence_custody_after NUMBER;
+  v_test_custody_id       CHAIN_OF_CUSTODY.custody_id%TYPE;
+  v_evidence7_custody_before NUMBER;
+  v_evidence7_custody_after  NUMBER;
+  v_judgment_count_before NUMBER;
+  v_judgment_count_after  NUMBER;
+  v_generic_count_before  NUMBER;
+  v_generic_count_after   NUMBER;
+  v_linked_hearing_status HEARING.hearing_status%TYPE;
+  v_hearing_status_after  HEARING.hearing_status%TYPE;
   PROCEDURE assert_count(p_table_name IN VARCHAR2, p_expected IN NUMBER) IS
     v_actual NUMBER;
   BEGIN
@@ -104,28 +130,6 @@ DECLARE
     END IF;
   END assert_scalar;
 
-  v_golden_inmate_id INMATE.inmate_id%TYPE;
-  v_golden_custody_id CHAIN_OF_CUSTODY.custody_id%TYPE;
-  v_golden_audit_id EVIDENCE_AUDIT.audit_id%TYPE;
-  v_transfer_count_before NUMBER;
-  v_transfer_count_after  NUMBER;
-  v_seed_transfer_count   NUMBER;
-  v_seed_transfer_count_after NUMBER;
-  v_seed_prison_id        INMATE.prison_id%TYPE;
-  v_seed_prison_after     INMATE.prison_id%TYPE;
-  v_seed_status_after     INMATE.status%TYPE;
-  v_seed_release_after    INMATE.actual_release_date%TYPE;
-  v_evidence_custody_count NUMBER;
-  v_evidence_custody_after NUMBER;
-  v_test_custody_id       CHAIN_OF_CUSTODY.custody_id%TYPE;
-  v_evidence7_custody_before NUMBER;
-  v_evidence7_custody_after  NUMBER;
-  v_judgment_count_before NUMBER;
-  v_judgment_count_after  NUMBER;
-  v_generic_count_before  NUMBER;
-  v_generic_count_after   NUMBER;
-  v_linked_hearing_status HEARING.hearing_status%TYPE;
-  v_hearing_status_after  HEARING.hearing_status%TYPE;
 BEGIN
   assert_count('ROLE', 7);
   assert_count('DEPARTMENT', 5);

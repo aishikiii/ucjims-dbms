@@ -1,10 +1,12 @@
-// Login endpoint: looks up the user by username, verifies password with bcrypt,
-// and issues a JWT carrying their role name (so the frontend can route them
-// to the right dashboard and the backend can authorize every later request).
+// Login and session endpoints:
+// Verifies user credentials using bcrypt, checks active account status,
+// and issues JWT tokens containing the canonical role name for server-side RBAC.
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { getConnection, oracledb } = require('../config/db');
+const { requireAuth } = require('../middleware/auth');
+const { sendDbError } = require('../utils/dbError');
 
 const router = express.Router();
 
@@ -27,7 +29,7 @@ router.post('/login', async (req, res) => {
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
-    const user = result.rows[0];
+    const user = result.rows && result.rows[0];
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
@@ -48,7 +50,7 @@ router.post('/login', async (req, res) => {
         roleName: user.ROLE_NAME,
         deptId: user.DEPARTMENT_ID,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'ucjims_default_secret_key_change_in_production',
       { expiresIn: process.env.JWT_EXPIRES_IN || '8h' }
     );
 
@@ -62,11 +64,15 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (err) {
-    console.error('Login error:', err.message);
-    res.status(500).json({ error: 'Internal server error' });
+    sendDbError(res, err, 'Login failed');
   } finally {
     if (conn) await conn.close();
   }
+});
+
+// GET /api/auth/me - inspect current authenticated session
+router.get('/me', requireAuth, (req, res) => {
+  res.json({ user: req.user });
 });
 
 module.exports = router;

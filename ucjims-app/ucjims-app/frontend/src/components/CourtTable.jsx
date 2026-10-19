@@ -4,7 +4,7 @@ import { apiFetch, getUser } from '../api.js';
 const CAN_MANAGE = ['Judge', 'Admin'];
 
 const EMPTY_HEARING = { case_id: '', court_id: '', judge_id: '', hearing_date: '', hearing_type: '', courtroom: '' };
-const EMPTY_JUDGMENT = { case_id: '', verdict: '', judgment_summary: '' };
+const EMPTY_JUDGMENT = { case_id: '', hearing_id: '', verdict: '', judgment_summary: '' };
 
 export default function CourtTable() {
   const [hearings, setHearings] = useState([]);
@@ -182,6 +182,16 @@ export default function CourtTable() {
                 <input
                   value={judgmentForm.case_id}
                   onChange={(e) => setJudgmentForm({ ...judgmentForm, case_id: e.target.value })}
+                  required
+                />
+              </label>
+              <label>
+                Hearing ID
+                <input
+                  type="number"
+                  placeholder="Completed Hearing ID"
+                  value={judgmentForm.hearing_id}
+                  onChange={(e) => setJudgmentForm({ ...judgmentForm, hearing_id: e.target.value })}
                   required
                 />
               </label>

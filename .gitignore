@@ -1,0 +1,31 @@
+# Node & JavaScript
+node_modules/
+dist/
+build/
+.npm/
+.eslintcache
+
+# Environment variables & secrets
+.env
+.env.local
+.env.staging
+.env.production
+*.env
+demo_credentials.txt
+*.key
+*.pem
+*.cert
+
+# Logs & temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.system_generated/
+scratch/
+
+# OS & Editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
