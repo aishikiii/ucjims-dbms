@@ -69,4 +69,117 @@ router.get('/inmates', requireRole('Prison Officer', 'Admin'), async (req, res) 
   }
 });
 
+// POST /api/court/hearings - schedule a hearing
+router.post('/hearings', requireRole('Judge', 'Admin'), async (req, res) => {
+  const { case_id, court_id, judge_id, hearing_date, hearing_type, courtroom } = req.body;
+  if (!case_id || !hearing_date || !hearing_type) {
+    return res.status(400).json({ error: 'case_id, hearing_date and hearing_type are required' });
+  }
+
+  let conn;
+  try {
+    conn = await getConnection();
+    const idResult = await conn.execute(`SELECT NVL(MAX(hearing_id), 0) + 1 AS next_id FROM HEARING`);
+    const newId = idResult.rows[0].NEXT_ID;
+
+    await conn.execute(
+      `INSERT INTO HEARING (hearing_id, case_id, court_id, judge_id, hearing_date,
+          hearing_type, courtroom, hearing_status)
+       VALUES (:id, :case_id, :court_id, :judge_id, TO_DATE(:hearing_date,'YYYY-MM-DD'),
+          :hearing_type, :courtroom, 'SCHEDULED')`,
+      { id: newId, case_id, court_id: court_id || null, judge_id: judge_id || null, hearing_date, hearing_type, courtroom: courtroom || null }
+    );
+    await conn.commit();
+    res.status(201).json({ hearing_id: newId });
+  } catch (err) {
+    if (conn) await conn.rollback();
+    console.error(err.message);
+    res.status(500).json({ error: 'Failed to schedule hearing', detail: err.message });
+  } finally {
+    if (conn) await conn.close();
+  }
+});
+
+// POST /api/court/judgments - record a judgment
+router.post('/judgments', requireRole('Judge', 'Admin'), async (req, res) => {
+  const { case_id, verdict, judgment_summary } = req.body;
+  if (!case_id || !verdict) {
+    return res.status(400).json({ error: 'case_id and verdict are required' });
+  }
+
+  let conn;
+  try {
+    conn = await getConnection();
+    const idResult = await conn.execute(`SELECT NVL(MAX(judgment_id), 0) + 1 AS next_id FROM JUDGMENT`);
+    const newId = idResult.rows[0].NEXT_ID;
+
+    await conn.execute(
+      `INSERT INTO JUDGMENT (judgment_id, case_id, judgment_date, verdict, judgment_summary)
+       VALUES (:id, :case_id, SYSDATE, :verdict, :judgment_summary)`,
+      { id: newId, case_id, verdict, judgment_summary: judgment_summary || null }
+    );
+    await conn.commit();
+    res.status(201).json({ judgment_id: newId });
+  } catch (err) {
+    if (conn) await conn.rollback();
+    console.error(err.message);
+    res.status(500).json({ error: 'Failed to record judgment', detail: err.message });
+  } finally {
+    if (conn) await conn.close();
+  }
+});
+
+// POST /api/court/inmates - admit an inmate
+router.post('/inmates', requireRole('Prison Officer', 'Admin'), async (req, res) => {
+  const { person_id, prison_id, expected_release_date } = req.body;
+  if (!person_id || !prison_id) {
+    return res.status(400).json({ error: 'person_id and prison_id are required' });
+  }
+
+  let conn;
+  try {
+    conn = await getConnection();
+    const idResult = await conn.execute(`SELECT NVL(MAX(inmate_id), 0) + 1 AS next_id FROM INMATE`);
+    const newId = idResult.rows[0].NEXT_ID;
+
+    await conn.execute(
+      `INSERT INTO INMATE (inmate_id, person_id, prison_id, admission_date, expected_release_date, status)
+       VALUES (:id, :person_id, :prison_id, SYSDATE, TO_DATE(:expected_release_date,'YYYY-MM-DD'), 'INCARCERATED')`,
+      { id: newId, person_id, prison_id, expected_release_date: expected_release_date || null }
+    );
+    await conn.commit();
+    res.status(201).json({ inmate_id: newId });
+  } catch (err) {
+    if (conn) await conn.rollback();
+    console.error(err.message);
+    res.status(500).json({ error: 'Failed to admit inmate', detail: err.message });
+  } finally {
+    if (conn) await conn.close();
+  }
+});
+
+// PATCH /api/court/inmates/:id/release - mark an inmate released
+router.patch('/inmates/:id/release', requireRole('Prison Officer', 'Admin'), async (req, res) => {
+  let conn;
+  try {
+    conn = await getConnection();
+    const result = await conn.execute(
+      `UPDATE INMATE SET status = 'RELEASED' WHERE inmate_id = :id`,
+      { id: req.params.id }
+    );
+    if (result.rowsAffected === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'Inmate not found' });
+    }
+    await conn.commit();
+    res.json({ inmate_id: Number(req.params.id), status: 'RELEASED' });
+  } catch (err) {
+    if (conn) await conn.rollback();
+    console.error(err.message);
+    res.status(500).json({ error: 'Failed to release inmate', detail: err.message });
+  } finally {
+    if (conn) await conn.close();
+  }
+});
+
 module.exports = router;

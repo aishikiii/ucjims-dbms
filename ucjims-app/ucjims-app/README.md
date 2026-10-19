@@ -101,8 +101,27 @@ and the frontend just hides panels a role can't use so the two layers agree.
 | GET | /api/evidence/:id/custody | same | chain of custody |
 | POST | /api/evidence/:id/transfer | Forensic/Admin | record a custody transfer |
 | GET | /api/court/hearings | Judge/Prosecutor/Admin/Investigator | list hearings |
+| POST | /api/court/hearings | Judge/Admin | schedule a hearing |
 | GET | /api/court/judgments | Judge/Prosecutor/Admin | list judgments |
+| POST | /api/court/judgments | Judge/Admin | record a judgment |
 | GET | /api/court/inmates | Prison Officer/Admin | list inmates |
+| POST | /api/court/inmates | Prison Officer/Admin | admit an inmate |
+| PATCH | /api/court/inmates/:id/release | Prison Officer/Admin | mark an inmate released |
+
+## What the UI can do now
+
+Each role-gated panel on the dashboard has its matching write form,
+so the demo isn't read-only:
+
+- **Cases** — Investigators/Admin can register a new case + FIR from the
+  dashboard; clicking any case row expands the full `CASE_SUMMARY_VIEW`
+  detail inline.
+- **Evidence** — Forensic Officers/Admin can record a custody transfer per
+  evidence item (the `EVIDENCE_AUDIT` trigger from Person B fires on this
+  insert, same as before).
+- **Court** — Judges/Admin can schedule a hearing and record a judgment.
+- **Inmates** — Prison Officers/Admin can admit a new inmate and release
+  an existing one.
 
 ## What's deliberately out of scope for this prototype
 
@@ -112,15 +131,16 @@ out as "future work" in your presentation if asked:
 - CI/CD pipeline, staging environment, deployment/HTTPS config
 - Full test suite (unit/integration/E2E)
 - Password reset flow, account lockout, CSRF protection
-- Full CRUD for every entity (only a representative slice is wired up —
-  case registration, evidence transfer; the rest are read-only lists)
+- Adding/removing a person's involvement in a case (`CASE_PERSON`) —
+  registering a case still requires a complainant/FIR filer ID you already
+  know (e.g. from the sample data)
+- Admin user-management screen (creating/deactivating `APP_USER` rows)
 - Audit log viewer for Admin (the DB trigger from Person B writes the audit
   rows already; there's just no screen to browse them yet)
 
 ## Next steps if you have more time
 
-1. Wire up the remaining write endpoints (add person to case, schedule
-   hearing, record judgment/sentence, admit/release inmate)
-2. Add a case detail page (click a row → full CASE_SUMMARY_VIEW detail)
-3. Add the Admin user-management screen
-4. Swap the shared demo password for per-user passwords before any real demo
+1. Add person lookup/creation so case registration doesn't require
+   already-known person IDs
+2. Add the Admin user-management screen
+3. Swap the shared demo password for per-user passwords before any real demo
