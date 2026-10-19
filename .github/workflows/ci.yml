@@ -1,0 +1,84 @@
+name: UCJIMS CI Pipeline - Stage 4 & 5 Verification
+
+on:
+  push:
+    branches: [main, stage-0-1, stage-4-5]
+  pull_request:
+    branches: [main, stage-0-1, stage-4-5]
+
+jobs:
+  database-lint:
+    name: Database Integrity & Static Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Static SQL & Constraint Linter
+        run: python static_lint.py
+
+  backend-tests:
+    name: Backend API & RBAC Test Suite
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ucjims-app/ucjims-app/backend
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Automated Test Suite (RBAC, Auth, DB Error Sanitizer, Validation)
+        run: npm test
+
+  frontend-build:
+    name: Frontend Build & Asset Verification
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ucjims-app/ucjims-app/frontend
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Frontend Application
+        run: npm run build
+
+  security-scan:
+    name: Security & Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Scan for Unintended Secrets or Private Keys
+        run: |
+          echo "Scanning tracked files for committed private keys or certificates..."
+          PATTERN="-----BEGIN[ A-Z]*PRIVATE KEY-----"
+          MATCHES=$(git grep -E "$PATTERN" -- ':!.github/workflows/*' || true)
+          if [ -n "$MATCHES" ]; then
+            echo "Private key detected in tracked files:"
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "No exposed private keys found in repository."
