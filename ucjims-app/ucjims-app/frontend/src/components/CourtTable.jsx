@@ -131,7 +131,7 @@ export default function CourtTable() {
             </div>
             {hearingError && <p className="error">{hearingError}</p>}
             <button type="submit" disabled={hearingSubmitting}>
-              {hearingSubmitting ? 'Scheduling…' : 'Schedule hearing'}
+              {hearingSubmitting ? 'Scheduling...' : 'Schedule hearing'}
             </button>
           </form>
         )}
@@ -161,7 +161,7 @@ export default function CourtTable() {
             ))}
           </tbody>
         </table>
-        {hearings.length === 0 && !error && <p className="empty">No hearings to show.</p>}
+        {hearings.length === 0 && !error && <div className="empty-state"><div style={{fontSize:'2rem'}}>⚖️</div><p>No hearings scheduled yet.</p></div>}
       </section>
 
       <section className="panel">
@@ -213,7 +213,7 @@ export default function CourtTable() {
             </div>
             {judgmentError && <p className="error">{judgmentError}</p>}
             <button type="submit" disabled={judgmentSubmitting}>
-              {judgmentSubmitting ? 'Recording…' : 'Record judgment'}
+              {judgmentSubmitting ? 'Recording...' : 'Record judgment'}
             </button>
           </form>
         )}
@@ -240,7 +240,7 @@ export default function CourtTable() {
             </tbody>
           </table>
         ) : (
-          <p className="empty">No judgments to show.</p>
+          <div className="empty-state"><div style={{fontSize:'2rem'}}>📋</div><p>No judgments recorded yet.</p></div>
         )}
       </section>
     </>

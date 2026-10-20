@@ -29,31 +29,72 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1>UCJIMS</h1>
-        <p className="subtitle">Unified Criminal Justice Information Management System</p>
+      <div className="login-split">
+        {/* Left branding panel */}
+        <div className="login-brand">
+          <div className="login-brand-icon">⚖️</div>
+          <h1 className="login-brand-title">UCJIMS</h1>
+          <p className="login-brand-sub">Unified Criminal Justice Information Management System</p>
+          <ul className="login-brand-features">
+            <li>🔒 Secure Role-Based Access</li>
+            <li>📁 Case & Evidence Management</li>
+            <li>⚖️ Court Hearings & Judgments</li>
+            <li>🏛️ Inmate Records & Transfers</li>
+          </ul>
+          <p className="login-brand-footer">Empowering justice through technology</p>
+        </div>
 
-        <label>
-          Username
-          <input value={username} onChange={(e) => setUsername(e.target.value)} required />
-        </label>
+        {/* Right form panel */}
+        <div className="login-form-panel">
+          <form className="login-card" onSubmit={handleSubmit}>
+            <div className="login-card-header">
+              <span className="login-card-icon">🛡️</span>
+              <h2>Secure Sign In</h2>
+              <p className="login-card-subtitle">Enter your credentials to access the system</p>
+            </div>
 
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+            <div className="form-field">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+                required
+                autoComplete="username"
+              />
+            </div>
 
-        {error && <p className="error">{error}</p>}
+            <div className="form-field">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                autoComplete="current-password"
+              />
+            </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign in'}
-        </button>
-      </form>
+            {error && (
+              <div className="error-box">
+                <span>⚠️</span> {error}
+              </div>
+            )}
+
+            <button type="submit" className="btn-primary btn-full" disabled={loading}>
+              {loading ? <span className="loading-dots">Signing in</span> : 'Sign In →'}
+            </button>
+
+            <p className="login-card-note">
+              Access is restricted to authorized personnel only.
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

@@ -131,7 +131,7 @@ export default function EvidenceTable() {
                       {formError && <p className="error">{formError}</p>}
                       {formSuccess && <p className="success">{formSuccess}</p>}
                       <button type="submit" disabled={submitting}>
-                        {submitting ? 'Recording…' : 'Record transfer'}
+                        {submitting ? 'Recording...' : 'Record transfer'}
                       </button>
                     </form>
                   </td>
@@ -141,7 +141,7 @@ export default function EvidenceTable() {
           ))}
         </tbody>
       </table>
-      {items.length === 0 && !error && <p className="empty">No evidence to show.</p>}
+      {items.length === 0 && !error && <div className="empty-state"><div style={{fontSize:'2rem'}}>🔬</div><p>No evidence records found.</p></div>}
     </section>
   );
 }

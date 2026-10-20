@@ -119,7 +119,7 @@ export default function InmateTable() {
           </div>
           {formError && <p className="error">{formError}</p>}
           <button type="submit" disabled={submitting}>
-            {submitting ? 'Admitting…' : 'Admit inmate'}
+            {submitting ? 'Admitting...' : 'Admit inmate'}
           </button>
         </form>
       )}
@@ -169,7 +169,7 @@ export default function InmateTable() {
                           disabled={releasingId === i.INMATE_ID}
                           onClick={() => handleRelease(i.INMATE_ID)}
                         >
-                          {releasingId === i.INMATE_ID ? 'Releasing…' : 'Release'}
+                          {releasingId === i.INMATE_ID ? 'Releasing...' : 'Release'}
                         </button>
                       </div>
                     )}
@@ -208,7 +208,7 @@ export default function InmateTable() {
                       {transferError && <p className="error">{transferError}</p>}
                       <div style={{ marginTop: '0.5rem' }}>
                         <button type="submit" disabled={transferSubmitting}>
-                          {transferSubmitting ? 'Recording Transfer…' : 'Confirm Transfer'}
+                          {transferSubmitting ? 'Recording Transfer...' : 'Confirm Transfer'}
                         </button>
                       </div>
                     </form>
@@ -219,7 +219,7 @@ export default function InmateTable() {
           ))}
         </tbody>
       </table>
-      {inmates.length === 0 && !error && <p className="empty">No inmates to show.</p>}
+      {inmates.length === 0 && !error && <div className="empty-state"><div style={{fontSize:'2rem'}}>🏛️</div><p>No inmate records found.</p></div>}
     </section>
   );
 }
