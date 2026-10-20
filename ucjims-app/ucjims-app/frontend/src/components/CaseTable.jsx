@@ -141,7 +141,7 @@ export default function CaseTable() {
           </div>
           {formError && <p className="error">{formError}</p>}
           <button type="submit" disabled={submitting}>
-            {submitting ? 'Registering…' : 'Register case + FIR'}
+            {submitting ? 'Registering...' : 'Register case + FIR'}
           </button>
         </form>
       )}
@@ -166,14 +166,14 @@ export default function CaseTable() {
                 <td>
                   <span className={`badge status-${c.CASE_STATUS}`}>{c.CASE_STATUS}</span>
                 </td>
-                <td>{c.PRIORITY}</td>
+                <td><span className={`badge priority-${c.PRIORITY}`}>{c.PRIORITY}</span></td>
                 <td>{c.REGISTRATION_DATE?.slice(0, 10)}</td>
               </tr>
               {selectedId === c.CASE_ID && (
                 <tr className="detail-row">
                   <td colSpan={5}>
                     {detailError && <p className="error">{detailError}</p>}
-                    {!detail && !detailError && <p className="empty">Loading case detail…</p>}
+                    {!detail && !detailError && <p className="loading-text">Loading case details...</p>}
                     {detail && (
                       <div className="detail-cards">
                         {detail.map((row, idx) => (
@@ -195,7 +195,7 @@ export default function CaseTable() {
           ))}
         </tbody>
       </table>
-      {cases.length === 0 && !error && <p className="empty">No cases to show.</p>}
+      {cases.length === 0 && !error && <div className="empty-state"><div style={{fontSize:'2rem'}}>📁</div><p>No cases found. Register a new case to get started.</p></div>}
     </section>
   );
 }
